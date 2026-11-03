@@ -1,98 +1,244 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronRight, Shield, Flame, Sparkles } from 'lucide-react';
+import { ArrowRight, ChevronRight, Eye, Plus, Shield, Sparkles, Compass } from 'lucide-react';
 import IMAGES from '../data/images';
 import { PRODUCTS, CATEGORIES } from '../data/products';
 import { BRAND_LORE } from '../data/brand';
 import ProductCard from '../components/common/ProductCard';
 import OrnamentalDivider from '../components/common/OrnamentalDivider';
+import { useCartStore } from '../hooks/useCartStore';
 
 export default function HomePage() {
+  const { setQuickViewProduct, addToCart } = useCartStore();
   const bestSellers = PRODUCTS.filter(p => p.isBestSeller);
-  const featuredRings = PRODUCTS.filter(p => p.category === 'rings');
+  const heroProduct = PRODUCTS.find(p => p.slug === 'nocturne-dagger-pendant') || PRODUCTS[1];
 
   return (
     <div className="relative min-h-screen bg-[#050505] text-[#efeae0] overflow-hidden">
       
-      {/* 1. HERO SECTION */}
-      <section className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center pt-24 sm:pt-20 px-4 overflow-hidden">
-        {/* Background Atmosphere Image with Ken Burns Zoom */}
-        <div className="absolute inset-0 z-0">
+      {/* 1. CINEMATIC EDITORIAL HERO SECTION */}
+      <section className="relative min-h-[92vh] lg:min-h-screen flex flex-col justify-between pt-28 sm:pt-36 pb-12 sm:pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        
+        {/* Background Atmospheric Depth Layers */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
           <img
             src={IMAGES.heroBackground}
             alt="Grave Altar Vaulted Cathedral"
-            className="w-full h-full object-cover object-center filter brightness-[0.35] contrast-125 scale-105 animate-pulse-subtle"
+            className="w-full h-full object-cover object-center filter brightness-[0.22] contrast-125 scale-105"
           />
-          {/* Gradients to blend into black */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-[#050505]/40" />
-          <div className="absolute inset-0 dark-vignette" />
+          {/* Subtle multi-stop gradient to merge into total black */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/75 to-[#050505]/50" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,#050505_95%)]" />
         </div>
 
-        {/* Floating Ember / Star dust particles simulation */}
-        <div className="absolute inset-0 pointer-events-none z-10 opacity-30">
-          <div className="absolute top-1/4 left-1/5 w-1 h-1 bg-altar-silver rounded-full animate-float-slow" />
-          <div className="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-altar-silver/80 rounded-full animate-float-slow [animation-delay:2s]" />
-          <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-altar-silver/60 rounded-full animate-float-slow [animation-delay:4s]" />
+        {/* Ambient floating dust particles */}
+        <div className="absolute inset-0 pointer-events-none z-10 opacity-25">
+          <div className="absolute top-1/4 left-1/6 w-1 h-1 bg-altar-silver rounded-full animate-float-slow" />
+          <div className="absolute top-1/3 right-1/4 w-1.5 h-1.5 bg-altar-silver/70 rounded-full animate-float-slow [animation-delay:2s]" />
+          <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-altar-silver/50 rounded-full animate-float-slow [animation-delay:4s]" />
         </div>
 
-        {/* Hero Content */}
-        <div className="relative z-20 max-w-4xl mx-auto text-center flex flex-col items-center">
+        {/* Top Editorial Metadata Ticker */}
+        <div className="relative z-20 max-w-7xl w-full mx-auto flex items-center justify-between border-b border-altar-silver/15 pb-4 mb-8 sm:mb-12 text-[10px] sm:text-xs font-mono uppercase tracking-widest text-altar-pewter">
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-altar-silver animate-ping" />
+            <span className="text-altar-silver">SANCTUARY ATELIER // VOL. MMXXIV</span>
+          </div>
+          <div className="hidden md:flex items-center gap-6">
+            <span>LOST-WAX SOLID CASTING</span>
+            <span>✦</span>
+            <span>ANTIQUE SULPHUR OXIDATION</span>
+          </div>
+          <span className="text-altar-silver/80">DISPATCH: WORLDWIDE</span>
+        </div>
+
+        {/* Main Hero Body: Asymmetric Luxury Editorial Split */}
+        <div className="relative z-20 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center my-auto">
           
-          {/* Official Monogram Badge */}
-          <div className="mb-6 relative group">
-            <div className="absolute -inset-4 bg-altar-silver/10 rounded-full blur-xl group-hover:bg-altar-blood/20 transition-all duration-700" />
-            <img
-              src={IMAGES.brandLogo}
-              alt="GRAVE ALTAR Seal"
-              className="relative w-28 h-28 sm:w-36 sm:h-36 object-contain filter drop-shadow-[0_0_20px_rgba(214,211,204,0.3)] transition-transform duration-700 group-hover:scale-105"
-            />
+          {/* Left Column: Command Statement (Spans 7 cols) */}
+          <div className="lg:col-span-7 flex flex-col items-start text-left">
+            
+            {/* Blended Logo Monogram (mix-blend-screen eliminates any black box completely) */}
+            <div className="flex items-center gap-4 mb-6">
+              <img
+                src={IMAGES.brandLogo}
+                alt="GRAVE ALTAR"
+                className="w-14 h-14 sm:w-16 sm:h-16 object-contain mix-blend-screen filter drop-shadow-[0_0_15px_rgba(214,211,204,0.4)]"
+              />
+              <div className="flex flex-col border-l border-altar-silver/20 pl-4">
+                <span className="font-serif tracking-widest4 text-[10px] text-altar-pewter uppercase">
+                  Order of the Altar
+                </span>
+                <span className="font-serif text-sm tracking-widest text-altar-silver font-semibold">
+                  GOTHIC ACCESSORIES
+                </span>
+              </div>
+            </div>
+
+            {/* Massive Editorial Display Headline */}
+            <h1 className="font-serif text-4xl sm:text-6xl md:text-7xl font-medium tracking-widest2 text-altar-bone uppercase leading-[1.08] mb-6">
+              Forged In<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-altar-silver to-altar-pewter">
+                Shadow.
+              </span><br />
+              <span className="text-altar-silver italic font-cormorant font-normal lowercase tracking-wide text-5xl sm:text-7xl md:text-8xl">
+                worn in devotion.
+              </span>
+            </h1>
+
+            {/* Atmospheric Lore Prose */}
+            <p className="font-sans text-xs sm:text-sm text-altar-pewter/90 max-w-xl leading-relaxed mb-8 font-light">
+              Heavy blackened .925 sterling silver, hand-sculpted cathedral ribs, cold hammered pewter, and volcanic black obsidian. Created for those who seek sovereign beauty in the quiet dark.
+            </p>
+
+            {/* Action Triggers */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 w-full sm:w-auto mb-8">
+              <Link
+                to="/shop"
+                className="btn-altar px-8 py-4 text-xs flex items-center justify-center gap-3 group"
+              >
+                <span>Enter The Altar Vault</span>
+                <ArrowRight size={15} className="group-hover:translate-x-1.5 transition-transform" />
+              </Link>
+
+              <a
+                href="#collections"
+                className="px-6 py-3.5 text-xs font-serif uppercase tracking-widest text-altar-pewter hover:text-white border border-altar-silver/15 hover:border-altar-silver/40 transition-all flex items-center justify-center gap-2"
+              >
+                <Compass size={14} />
+                <span>Explore Disciplines</span>
+              </a>
+            </div>
+
+            {/* Micro Provenance Marks */}
+            <div className="flex items-center gap-4 text-[11px] font-mono text-altar-pewter/70 pt-4 border-t border-altar-silver/10 w-full">
+              <span>✦ 100% Solid Metal</span>
+              <span>✦ Lost-Wax Cast</span>
+              <span>✦ Wax-Sealed Velvet Box</span>
+            </div>
           </div>
 
-          {/* Subtitle / Proclamation */}
-          <div className="flex items-center gap-3 mb-4">
-            <span className="h-[1px] w-8 sm:w-16 bg-altar-silver/40" />
-            <span className="font-serif text-[10px] sm:text-xs uppercase tracking-widest4 text-altar-silver font-light">
-              Gothic Accessories
-            </span>
-            <span className="h-[1px] w-8 sm:w-16 bg-altar-silver/40" />
+          {/* Right Column: Featured Relic Showcase Card (Spans 5 cols) */}
+          <div className="lg:col-span-5 w-full max-w-md mx-auto lg:max-w-none">
+            <div className="relative bg-[#0c0c0e]/95 border border-altar-silver/20 p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.9)] backdrop-blur-md group">
+              
+              {/* Corner Accents */}
+              <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-altar-silver" />
+              <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-altar-silver" />
+              <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-altar-silver" />
+              <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-altar-silver" />
+
+              {/* Tag Header */}
+              <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-widest text-altar-pewter mb-3">
+                <span className="flex items-center gap-1.5 text-altar-silver font-semibold">
+                  <Sparkles size={12} className="text-altar-silver" />
+                  Featured Liturgy
+                </span>
+                <span className="text-altar-blood-bright font-medium">Limited Batch</span>
+              </div>
+
+              {/* Card Image */}
+              <div className="relative aspect-[4/5] w-full bg-[#050505] border border-altar-silver/10 overflow-hidden mb-4">
+                <img
+                  src={heroProduct.images.primary}
+                  alt={heroProduct.name}
+                  className="w-full h-full object-cover object-center gothic-photo transition-transform duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+                
+                {/* Image Overlay Label */}
+                <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between pointer-events-none">
+                  <div>
+                    <span className="font-mono text-[9px] uppercase tracking-wider text-altar-silver/80 block">
+                      {heroProduct.material.split('&')[0]}
+                    </span>
+                    <h3 className="font-serif text-sm tracking-wider uppercase text-white font-medium">
+                      {heroProduct.name}
+                    </h3>
+                  </div>
+                  <span className="font-serif text-sm font-semibold text-altar-bone">
+                    ₹{heroProduct.price.toLocaleString('en-IN')}
+                  </span>
+                </div>
+              </div>
+
+              {/* Tagline & Actions */}
+              <p className="font-sans text-xs text-altar-pewter line-clamp-2 mb-4 font-light">
+                {heroProduct.tagline}
+              </p>
+
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setQuickViewProduct(heroProduct)}
+                  className="flex-1 py-2.5 px-3 bg-[#131316] border border-altar-silver/30 text-altar-silver hover:text-white hover:border-altar-silver text-[11px] font-serif uppercase tracking-wider flex items-center justify-center gap-1.5 transition-colors"
+                >
+                  <Eye size={13} />
+                  <span>Examine Relic</span>
+                </button>
+                <button
+                  onClick={() => addToCart(heroProduct)}
+                  className="py-2.5 px-4 bg-altar-silver text-[#050505] hover:bg-white text-[11px] font-serif uppercase tracking-wider font-medium flex items-center justify-center gap-1 transition-colors"
+                >
+                  <Plus size={14} />
+                  <span>Consecrate</span>
+                </button>
+              </div>
+            </div>
           </div>
 
-          {/* Main Title Tagline */}
-          <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-medium tracking-widest2 text-altar-bone uppercase leading-tight sm:leading-none mb-6 max-w-3xl">
-            Forged In Shadow.<br />
-            <span className="text-altar-silver italic font-cormorant font-normal lowercase tracking-normal text-4xl sm:text-6xl md:text-7xl">
-              worn in devotion.
+        </div>
+
+        {/* Bottom Hallmarks Banner (Clean, spaced, no overlap) */}
+        <div className="relative z-20 max-w-7xl w-full mx-auto pt-10 mt-8 border-t border-altar-silver/10 grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
+          <div className="space-y-1">
+            <span className="font-mono text-[10px] text-altar-silver tracking-widest block uppercase">
+              01 // The Matrix
             </span>
-          </h1>
+            <h4 className="font-serif text-xs uppercase tracking-wider text-altar-bone">
+              Lost-Wax Crucible
+            </h4>
+            <p className="font-sans text-[11px] text-altar-pewter leading-snug font-light">
+              Individually sculpted wax models cast into molten sterling silver.
+            </p>
+          </div>
 
-          <p className="font-sans text-xs sm:text-sm text-altar-pewter max-w-lg leading-relaxed mb-10 font-light">
-            Subterranean metallurgy, blackened sterling silver, and sacred talismans sculpted for the sovereign and the nocturnal.
-          </p>
+          <div className="space-y-1">
+            <span className="font-mono text-[10px] text-altar-silver tracking-widest block uppercase">
+              02 // The Alchemy
+            </span>
+            <h4 className="font-serif text-xs uppercase tracking-wider text-altar-bone">
+              Sulphur Oxidation
+            </h4>
+            <p className="font-sans text-[11px] text-altar-pewter leading-snug font-light">
+              Deep antique charcoal patina achieved via true chemical immersion.
+            </p>
+          </div>
 
-          {/* Action CTAs */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <Link
-              to="/shop"
-              className="btn-altar w-full sm:w-auto px-8 py-3.5 text-xs flex items-center justify-center gap-3 group"
-            >
-              <span>Enter The Altar</span>
-              <ArrowRight size={14} className="group-hover:translate-x-1.5 transition-transform" />
-            </Link>
+          <div className="space-y-1">
+            <span className="font-mono text-[10px] text-altar-silver tracking-widest block uppercase">
+              03 // Solid Substance
+            </span>
+            <h4 className="font-serif text-xs uppercase tracking-wider text-altar-bone">
+              Genuine Heft
+            </h4>
+            <p className="font-sans text-[11px] text-altar-pewter leading-snug font-light">
+              No hollow stamping. Authoritative weight and generational durability.
+            </p>
+          </div>
 
-            <a
-              href="#collections"
-              className="px-6 py-3 text-xs font-serif uppercase tracking-widest text-altar-pewter hover:text-white transition-colors"
-            >
-              Explore Collections ↓
-            </a>
+          <div className="space-y-1">
+            <span className="font-mono text-[10px] text-altar-silver tracking-widest block uppercase">
+              04 // Sanctuary Delivery
+            </span>
+            <h4 className="font-serif text-xs uppercase tracking-wider text-altar-bone">
+              Wax-Sealed Coffer
+            </h4>
+            <p className="font-sans text-[11px] text-altar-pewter leading-snug font-light">
+              Encased in crushed velvet presentation casket with tracking.
+            </p>
           </div>
         </div>
 
-        {/* Scroll down indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center opacity-60 hover:opacity-100 transition-opacity">
-          <span className="text-[9px] font-mono tracking-widest text-altar-pewter uppercase mb-2">Descend</span>
-          <div className="w-[1px] h-8 bg-gradient-to-b from-altar-silver to-transparent animate-pulse" />
-        </div>
       </section>
 
       {/* 2. INFINITE MARQUEE STRIP */}
@@ -470,4 +616,3 @@ export default function HomePage() {
     </div>
   );
 }
-
