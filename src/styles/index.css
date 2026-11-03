@@ -1,0 +1,171 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --black: #050505;
+  --charcoal: #0e0e0f;
+  --charcoal-card: #131316;
+  --charcoal-border: #222226;
+  --pewter: #8f8d88;
+  --silver: #d6d3cc;
+  --bone: #efeae0;
+  --blood: #5c0f14;
+  --blood-bright: #8a151e;
+  --blood-glow: rgba(92, 15, 20, 0.45);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #232328;
+  border-radius: 0px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8f8d88;
+}
+
+/* Film Grain Texture Overlay */
+.film-grain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Soft Radial Vignette */
+.dark-vignette {
+  background: radial-gradient(circle at center, transparent 40%, rgba(5, 5, 5, 0.8) 100%);
+}
+
+/* Metallic Shimmer Effect */
+@keyframes metallicSweep {
+  0% { transform: translateX(-150%) skewX(-25deg); }
+  50%, 100% { transform: translateX(250%) skewX(-25deg); }
+}
+
+.shimmer-hover {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(214, 211, 204, 0.18), transparent);
+  transform: translateX(-150%) skewX(-25deg);
+  pointer-events: none;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.shimmer-hover:hover::after {
+  opacity: 1;
+  animation: metallicSweep 1.6s ease-in-out infinite;
+}
+
+/* Gothic image desaturation + contrast treatment */
+.gothic-photo {
+  filter: contrast(1.1) brightness(0.92) saturate(0.85);
+  transition: filter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.gothic-photo:hover {
+  filter: contrast(1.15) brightness(1.0) saturate(0.95);
+}
+
+/* Hairline silver borders */
+.border-hairline {
+  border: 1px solid rgba(214, 211, 204, 0.12);
+}
+.border-hairline-b {
+  border-bottom: 1px solid rgba(214, 211, 204, 0.12);
+}
+.border-hairline-t {
+  border-top: 1px solid rgba(214, 211, 204, 0.12);
+}
+
+/* Chamfered gothic button */
+.btn-altar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8125rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--bone);
+  border: 1px solid rgba(214, 211, 204, 0.3);
+  background: rgba(14, 14, 15, 0.7);
+  padding: 0.85rem 1.75rem;
+  transition: all 0.35s ease;
+  clip-path: polygon(
+    8px 0%, 100% 0%, 
+    100% calc(100% - 8px), calc(100% - 8px) 100%, 
+    0% 100%, 0% 8px
+  );
+  overflow: hidden;
+}
+.btn-altar:hover {
+  border-color: var(--silver);
+  background: rgba(214, 211, 204, 0.12);
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(214, 211, 204, 0.15);
+}
+
+.btn-blood {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cinzel', serif;
+  font-size: 0.8125rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #efeae0;
+  border: 1px solid rgba(138, 21, 30, 0.5);
+  background: var(--blood);
+  padding: 0.85rem 1.75rem;
+  transition: all 0.35s ease;
+  clip-path: polygon(
+    8px 0%, 100% 0%, 
+    100% calc(100% - 8px), calc(100% - 8px) 100%, 
+    0% 100%, 0% 8px
+  );
+}
+.btn-blood:hover {
+  background: #73131a;
+  border-color: #a8202b;
+  box-shadow: 0 0 25px rgba(92, 15, 20, 0.6);
+}
+
+/* Touch active haptic scale for mobile */
+@media (max-width: 768px) {
+  .touch-press:active {
+    transform: scale(0.96);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Hide scrollbar for clean carousels */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+

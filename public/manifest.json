@@ -1,0 +1,17 @@
+{
+  "short_name": "Grave Altar",
+  "name": "Grave Altar - Gothic Accessories",
+  "icons": [
+    {
+      "src": "/images/grave-altar-logo.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192 512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "display": "standalone",
+  "orientation": "portrait"
+}
+
